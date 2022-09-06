@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import Data from "../../lib/data";
+import Data from "../../../lib/data";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
@@ -10,6 +10,13 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     } catch (e) {
       res.statusCode = 500;
       return res.send(e);
+    }
+  }
+  if (req.method === "POST") {
+    const { text, color } = req.body;
+    if (!text || !color) {
+      res.statusCode = 400;
+      return res.end("text 혹은 color가 없습니다.");
     }
   }
 

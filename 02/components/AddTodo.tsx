@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import palette from "../styles/palette";
 import BrushIcon from "../public/static/svg/brush.svg";
 import { TodoType } from "../types/todo";
+import { addTodoAPI } from "../lib/api/todo";
 
 const Container = styled.div`
   padding: 16px;
@@ -88,8 +90,22 @@ const Container = styled.div`
 `;
 
 const AddTodo: React.FC = () => {
+  const router = useRouter();
   const [text, setText] = useState("");
   const [selectedColor, setSelectedColor] = useState<TodoType["color"]>();
+
+  const addTodo = async () => {
+    try {
+      if (!text || !selectedColor) {
+        alert("색상과 할일을 입력해주세요.");
+        return;
+      }
+      await addTodoAPI({ text, color: selectedColor });
+      router.push("/");
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <Container>
       <div className="add-todo-header">
@@ -97,7 +113,7 @@ const AddTodo: React.FC = () => {
         <button
           type="button"
           className="add-todo-submit-button"
-          onClick={() => {}}
+          onClick={addTodo}
         >
           추가하기
         </button>

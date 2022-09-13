@@ -5,7 +5,7 @@ import AirbnbLogoIcon from "../public/static/svg/logo/logo.svg";
 import AirbnbLogoTextIcon from "../public/static/svg/logo/logo_text.svg";
 import palette from "../styles/palette";
 import useModal from "../hooks/useModal";
-import SignUpModal from "./SignUpModal";
+import SignUpModal from "./auths/SignUpModal";
 
 const Container = styled.div`
   position: sticky; /* 스크롤하지 않을 때는 static position처럼 동작하다가 스크롤할 때는 fixed position과 유사하게 동작한다 */

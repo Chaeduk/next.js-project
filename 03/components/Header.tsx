@@ -6,10 +6,10 @@ import AirbnbLogoIcon from "../public/static/svg/logo/logo.svg";
 import AirbnbLogoTextIcon from "../public/static/svg/logo/logo_text.svg";
 import palette from "../styles/palette";
 import useModal from "../hooks/useModal";
-import SignUpModal from "./auths/SignUpModal";
 import { useSelector } from "../store";
 import { authActions } from "../store/auth";
 import HamburgerIcon from "../public/static/svg/header/hamburger.svg";
+import AuthModal from "./auths/AuthModal";
 
 const Container = styled.div`
   position: sticky; /* 스크롤하지 않을 때는 static position처럼 동작하다가 스크롤할 때는 fixed position과 유사하게 동작한다 */
@@ -125,7 +125,7 @@ const Header: React.FC = () => {
             type="button"
             className="header-sign-up-button"
             onClick={() => {
-              dispatch(authActions.setAuthMode("login"));
+              dispatch(authActions.setAuthMode("signup"));
               openModal();
             }}
           >
@@ -135,7 +135,7 @@ const Header: React.FC = () => {
             type="button"
             className="header-login-button"
             onClick={() => {
-              dispatch(authActions.setAuthMode("signup"));
+              dispatch(authActions.setAuthMode("login"));
               openModal();
             }}
           >
@@ -154,7 +154,7 @@ const Header: React.FC = () => {
         </button>
       )}
       <ModalPortal>
-        <SignUpModal closeModal={closeModal} />
+        <AuthModal closeModal={closeModal} />
       </ModalPortal>
     </Container>
   );

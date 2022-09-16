@@ -46,6 +46,8 @@ module.exports = {
     "no-use-before-define": "off", // 선언하기 전에 사용할수 없다. 중복
     "@typescript-eslint/no-use-before-define": ["warn"], // 선언하기 전에 사용 한다면 경고
     "react/require-default-props": "off",
+    "jsx-a11y/no-static-element-interactions": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
     "no-case-declarations": "off", // case문 안에서 변수 선언 사용하기
     "react/jsx-filename-extension": [
       1,

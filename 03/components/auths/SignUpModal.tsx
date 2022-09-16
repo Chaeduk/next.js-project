@@ -13,6 +13,7 @@ import { monthList, dayList, yearList } from "../../lib/staticData";
 import Button from "../common/Button";
 import { signupAPI } from "../../lib/api/auth";
 import { userActions } from "../../store/user";
+import { authActions } from "../../store/auth";
 import useValidateMode from "../../hooks/useValidateMode";
 import PasswordWarning from "./PasswordWarning";
 
@@ -102,6 +103,10 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
       setValidateMode(false);
     };
   }, []);
+
+  const changeToLoginModal = () => {
+    dispatch(authActions.setAuthMode("login"));
+  };
 
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
@@ -323,7 +328,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         <span
           className="sign-up-modal-set-login"
           role="presentation"
-          onClick={() => {}}
+          onClick={changeToLoginModal}
         >
           로그인
         </span>

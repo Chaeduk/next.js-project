@@ -77,6 +77,9 @@ const Container = styled.form`
 `;
 
 const PASSWORD_MIN_LENGTH = 8;
+const disabledMonths = ["월"];
+const disabledDays = ["일"];
+const disabledYears = ["년"];
 
 interface IProps {
   closeModal: () => void;
@@ -293,7 +296,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           <Selector
             options={monthList}
             defaultValue="월"
-            disabledOptions={["월"]}
+            disabledOptions={disabledMonths}
             value={birthMonth}
             onChange={onChangeBirthMonth}
             isValid={!!birthMonth}
@@ -303,7 +306,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
           <Selector
             options={dayList}
             defaultValue="일"
-            disabledOptions={["일"]}
+            disabledOptions={disabledDays}
             value={birthDay}
             onChange={onChangeBirthDay}
             isValid={!!birthDay}
@@ -312,7 +315,7 @@ const SignUpModal: React.FC<IProps> = ({ closeModal }) => {
         <div className="sign-up-modal-birthday-year-selector">
           <Selector
             options={yearList}
-            disabledOptions={["년"]}
+            disabledOptions={disabledYears}
             defaultValue="년"
             value={birthYear}
             onChange={onChangeBirthYear}

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
+import OutsideClickHandler from "react-outside-click-handler";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import AirbnbLogoIcon from "../public/static/svg/logo/logo.svg";
@@ -10,6 +11,9 @@ import { useSelector } from "../store";
 import { authActions } from "../store/auth";
 import HamburgerIcon from "../public/static/svg/header/hamburger.svg";
 import AuthModal from "./auths/AuthModal";
+import { logoutAPI } from "../lib/api/auth";
+import { userActions } from "../store/user";
+import HeaderAuths from "./HeaderAuths";
 
 const Container = styled.div`
   position: sticky; /* 스크롤하지 않을 때는 static position처럼 동작하다가 스크롤할 때는 fixed position과 유사하게 동작한다 */
@@ -105,12 +109,54 @@ const Container = styled.div`
       z-index: 11;
     }
   }
+
+  .header-logo-wrapper + div {
+    position: relative;
+  }
+
+  .header-usermenu {
+    position: absolute;
+    right: 0;
+    top: 52px;
+    width: 240px;
+    padding: 8px 0;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    background-color: white;
+    li {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 42px;
+      padding: 0 16px;
+      cursor: pointer;
+      &:hover {
+        background-color: ${palette.gray_f7};
+      }
+    }
+    .header-usermenu-divider {
+      width: 100%;
+      height: 1px;
+      margin: 8px 0;
+      background-color: ${palette.gray_dd};
+    }
+  }
 `;
 
 const Header: React.FC = () => {
   const { openModal, ModalPortal, closeModal } = useModal();
+  const [isUsermenuOpened, setIsUsermenuOpened] = useState(false);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
+  const logout = async () => {
+    try {
+      await logoutAPI();
+      dispatch(userActions.initUser());
+    } catch (e: any) {
+      console.log(e.message);
+    }
+  };
   return (
     <Container>
       <Link href="/">
@@ -119,39 +165,47 @@ const Header: React.FC = () => {
           <AirbnbLogoTextIcon />
         </a>
       </Link>
-      {!user.isLogged && (
-        <div className="header-auth-buttons">
-          <button
-            type="button"
-            className="header-sign-up-button"
-            onClick={() => {
-              dispatch(authActions.setAuthMode("signup"));
-              openModal();
-            }}
-          >
-            회원가입
-          </button>
-          <button
-            type="button"
-            className="header-login-button"
-            onClick={() => {
-              dispatch(authActions.setAuthMode("login"));
-              openModal();
-            }}
-          >
-            로그인
-          </button>
-        </div>
-      )}
+      {!user.isLogged && <HeaderAuths />}
       {user.isLogged && (
-        <button className="header-user-profile" type="button">
-          <HamburgerIcon />
-          <img
-            src={user.profileImage}
-            className="header-user-profile-image"
-            alt=""
-          />
-        </button>
+        <OutsideClickHandler
+          onOutsideClick={() => {
+            if (isUsermenuOpened) {
+              setIsUsermenuOpened(false);
+            }
+          }}
+        >
+          <button
+            className="header-user-profile"
+            type="button"
+            onClick={() => setIsUsermenuOpened(!isUsermenuOpened)}
+          >
+            <HamburgerIcon />
+            <img
+              src={user.profileImage}
+              className="header-user-profile-image"
+              alt=""
+            />
+          </button>
+          {isUsermenuOpened && (
+            <ul className="header-usermenu">
+              <li>숙소 관리</li>
+              <Link href="/room/register/building">
+                <a
+                  role="presentation"
+                  onClick={() => {
+                    setIsUsermenuOpened(false);
+                  }}
+                >
+                  <li>숙소 등록하기</li>
+                </a>
+              </Link>
+              <div className="header-usermenu-divider" />
+              <li role="presentation" onClick={logout}>
+                로그아웃
+              </li>
+            </ul>
+          )}
+        </OutsideClickHandler>
       )}
       <ModalPortal>
         <AuthModal closeModal={closeModal} />

@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type RegisterRoomState = {
   largeBuildingType: string | null;
@@ -17,9 +17,24 @@ const initialState: RegisterRoomState = {
 const registerRoom = createSlice({
   name: "registerRoom",
   initialState,
-  reducers: {},
+  reducers: {
+    setLargeBuildingType(state, action: PayloadAction<string>) {
+      if (action.payload === "") {
+        state.largeBuildingType = null;
+      }
+      state.largeBuildingType = action.payload;
+      return state;
+    },
+    setBuildingType(state, action: PayloadAction<string>) {
+      if (action.payload === "") {
+        state.buildingType = null;
+      }
+      state.buildingType = action.payload;
+      return state;
+    },
+  },
 });
 
-export const registerRoomActions = { ...registerRoom };
+export const registerRoomActions = { ...registerRoom.actions };
 
 export default registerRoom;

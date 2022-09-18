@@ -53,6 +53,7 @@ interface IProps {
 }
 
 const LoginModal: React.FC<IProps> = ({ closeModal }) => {
+  const { setValidateMode } = useValidateMode();
   useEffect(() => {
     return () => {
       setValidateMode(false);
@@ -64,8 +65,6 @@ const LoginModal: React.FC<IProps> = ({ closeModal }) => {
   const [password, setPassword] = useState("");
 
   const [isPasswordHided, setIsPasswordHided] = useState(true);
-
-  const { setValidateMode } = useValidateMode();
 
   const onChangeEmail = (event: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
